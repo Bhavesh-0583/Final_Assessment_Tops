@@ -1,0 +1,166 @@
+Section A – S1
+
+Question:
+
+Which specific Streamlit components would you use for each of these three
+requirements, and how does placing navigation controls in the sidebar — rather than on the
+main page — improve usability when the dashboard has multiple filter options?
+
+
+Answer:
+
+For the three requirements, I would use the following Streamlit components:
+
+City dropdown: st.selectbox() — this allows users to select a city from a list of available cities.
+Delivery-time range: st.slider() — this allows analysts to select a minimum and maximum delivery-time range.
+Navigation: I would use the Streamlit sidebar with navigation controls such as st.sidebar.selectbox() to switch between the Overview and Restaurant Performance pages.
+
+Placing navigation controls in the sidebar improves usability because it keeps the main page clear and focused on the dashboard's metrics, charts, and results. When there are multiple filter options, keeping navigation in the sidebar reduces clutter and makes the dashboard easier for analysts to use.
+
+
+
+
+
+
+
+
+
+Section A – S2
+
+Question: 
+
+Why would you use Plotly over Streamlit's built-in st.line_chart for this requirement,
+and what are the two essential lines of code needed to render a Plotly figure object inside a
+Streamlit app?
+
+
+Answer:
+
+I would use Plotly instead of Streamlit's built-in st.line_chart() because Plotly provides more interactive features. It allows analysts to zoom into the chart, hover over data points to see exact values, and toggle between different restaurants.
+
+The two essential lines of code are:
+
+import streamlit as st
+import plotly.express as px
+
+fig = px.line(df, x="hour", y="order_count", color="restaurant")
+st.plotly_chart(fig)
+
+Here, px.line() creates the Plotly figure object, and st.plotly_chart(fig) renders that figure inside the Streamlit application.
+
+
+
+
+
+
+
+
+
+
+
+Section A – S3
+
+
+Question: 
+
+Describe the sequence of steps — from saving the model file to displaying the
+prediction — that makes this Streamlit prediction app work correctly, and explain why wrapping
+the model load function with st.cache_resource is critical for production performance.
+
+
+Answer:
+
+The sequence of steps for creating the Streamlit prediction app is:
+
+Train the delivery-time prediction model and save the trained model as delivery_model.pkl using joblib.
+In the Streamlit application, import joblib and create a function to load the saved model.
+Use @st.cache_resource with the model-loading function so that the model is loaded only once instead of being reloaded every time the user interacts with the app.
+Create input widgets for the order details, such as distance, order value, and time of day.
+When the dispatcher enters the details and clicks the prediction button, encode the time-of-day value as an integer and assemble the input features into the required array.
+Pass the feature array to the loaded model using model.predict().
+Display the predicted delivery time in minutes using st.success().
+
+Example:
+
+@st.cache_resource
+def load_model():
+    return joblib.load("delivery_model.pkl")
+
+model = load_model()
+
+prediction = model.predict(features)
+
+st.success(f"Predicted Delivery Time: {prediction[0]:.2f} minutes")
+
+Using st.cache_resource is critical for production performance because it prevents the trained model from being loaded repeatedly during every Streamlit interaction. The model is loaded once and the cached resource can then be reused, making the application faster and more efficient.
+
+
+
+
+Section A – S4
+
+Question: 
+
+Which activation function should the output layer use for this three-class
+classification task, and why does using sigmoid on the output layer produce incorrect probability
+distributions when you need mutually exclusive class probabilities across all three tiers?
+
+
+Answer:
+
+For this three-class classification task, the output layer should use the Softmax activation function.
+
+Softmax is appropriate because the three urgency tiers — Standard, Priority, and Express — are mutually exclusive classes. It converts the output values into probabilities whose total across all three classes is 1, allowing the model to represent the probability of each class.
+
+Using sigmoid on the output layer is not appropriate for this requirement because sigmoid produces independent probabilities for each output rather than a single probability distribution across the three mutually exclusive classes. Therefore, the probabilities do not necessarily sum to 1.
+
+Hence, the final output layer should use Softmax to produce a proper probability distribution across Standard, Priority, and Express.
+
+
+
+
+
+
+
+Section A – S5
+
+Question.
+
+Compare Dropout regularization and L2 weight regularization as strategies to reduce
+this gap. For a dense multi-layer neural network, which would you apply first in practice, at what
+typical rate or strength, and what different mechanism does each use to discourage overfitting?
+
+
+Answer:
+
+Dropout and L2 weight regularization are two techniques that can reduce overfitting in a dense, multi-layer neural network.
+
+Dropout regularization randomly deactivates a proportion of neurons during training. This prevents the network from depending too heavily on particular neurons and helps it learn more general patterns. For this model, I would apply Dropout first, using a typical rate of around 0.3.
+
+L2 weight regularization adds a penalty to the loss function based on the size of the model's weights. This encourages the network to keep its weights smaller and discourages overly complex patterns that may cause overfitting. Its strength is controlled by an L2 regularization parameter.
+
+Therefore, Dropout and L2 regularization reduce overfitting through different mechanisms: Dropout randomly removes neuron contributions during training, while L2 discourages excessively large weights.
+
+
+
+
+
+
+
+Section A – S6
+
+Question.
+
+Explain the key architectural difference between an ANN and a CNN that makes CNNs
+significantly more effective for image classification, and describe what a convolutional filter
+learns from spatial data that fully connected layers cannot efficiently capture.
+
+
+
+Answer:
+
+The key architectural difference is that an ANN uses fully connected layers, where the image pixels are typically flattened into a one-dimensional input vector. This can result in a large number of parameters and does not efficiently preserve the spatial relationships between neighboring pixels.
+
+A CNN (Convolutional Neural Network) uses convolutional layers and filters that operate directly on the spatial structure of an image. CNNs are therefore significantly more effective for image classification because they can learn spatial features while processing the image.
+
+A convolutional filter learns important patterns and features from the spatial data, such as edges, textures, shapes, and more complex visual patterns at deeper layers. Fully connected ANN layers do not efficiently capture these local spatial relationships because the image is flattened before being processed.
