@@ -1,1 +1,3 @@
+# Food Delivery Intelligence Dashboard
 
+This project is a multi-page Streamlit application for food delivery intelligence. It contains four pages: Home, Data Explorer, Demand Predictor, and Model Info. The Data Explorer allows users to upload a CSV file and view delivery statistics and interactive Plotly charts, while the Demand Predictor uses a trained Keras ANN model to classify demand as Low, Medium, or High. To run the application locally, install the required packages using `pip install -r requirements.txt`, make sure `demand_model.keras` is in the same folder as `app.py`, and then run `streamlit run app.py` in the terminal. The application will open in a web browser.
